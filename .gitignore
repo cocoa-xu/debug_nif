@@ -28,3 +28,6 @@ debug_nif-*.tar
 
 # Generated escript binary.
 /debug_nif
+
+# macOS
+.DS_Store

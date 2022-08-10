@@ -2,20 +2,27 @@
 
 An escript for debugging a NIF library in a debugger. It automates the process described here, [Debug Erlang NIF library on macOS and Linux](https://cocoa-research.works/2022/02/debug-erlang-nif-library/).
 
-## Installation
+![screenshot](assets/screenshot.png)
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `debug_nif` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:debug_nif, "~> 0.1.0"}
-  ]
-end
+## Build and Installation
+```shell
+$ mix do escript.build + escript.install
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/debug_nif>.
-
+## Usage
+```shell
+$ debug_nif --help
+synopsis:
+    A convenient script for debugging NIF libraries.
+usage:
+    $ debug_nif {options} arg1 arg2 ...
+    is equvilent to call `mix arg1 arg2 ...`
+options:
+    --print-only          Only print commands and necessary environment variables
+                          for running the debugger.
+    --print-cmd-only      Only print commands for running the debugger.
+    --debugger=DEBUGGER   Set which debugger to use. `lldb` is the default for
+                          macOS and `gdb` is the default for linux.
+    --generate=TYPE       It's possible to generate a Xcode project on macOS for
+                          debugging or profiling with Xcode. [TODO]
+```
