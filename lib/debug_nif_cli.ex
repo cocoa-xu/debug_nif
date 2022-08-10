@@ -85,6 +85,8 @@ defmodule DebugNIF.CLI do
                         args
                     "gdb" ->
                         ["--ex", erlexec, "--args"] ++ commands ++ args
+                    _ ->
+                        args
                 end
               env = [
                   {"BINDIR", bind_dir},
