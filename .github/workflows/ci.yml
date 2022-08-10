@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+      - 'LICENSE*'
+      - 'assets/**'
+
+jobs:
+  linux:
+    runs-on: ubuntu-20.04
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0.3
+          elixir-version: 1.13.4
+      - name: Compile Test
+        run: |
+          mix do escript.build
+
+  macos:
+    runs-on: macos-11
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: macOS setup
+        run: |
+          brew install erlang elixir
+          mix local.hex --force
+          mix local.rebar --force
+      - name: Compile Test
+        run: |
+          mix do escript.build

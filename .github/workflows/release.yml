@@ -1,0 +1,53 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  linux:
+    runs-on: ubuntu-20.04
+    env:
+      MIX_ENV: prod
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0.3
+          elixir-version: 1.13.4
+      - name: Compile
+        run: |
+          mkdir -p artefacts
+          mix do escript.build
+          mv priv/debug.so artefacts/debug-x86_64-linux-gnu.so
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: artefacts/*.so
+
+  macos:
+    runs-on: macos-11
+    env:
+      MIX_ENV: prod
+    steps:
+      - uses: actions/checkout@v3
+      - name: macOS setup
+        run: |
+          brew install erlang elixir
+          mix local.hex --force
+          mix local.rebar --force
+      - name: Compile
+        run: |
+          mkdir -p artefacts
+          export CC="gcc -arch x86_64"
+          mix compile
+          mv priv/debug.so artefacts/debug-x86_64-apple-darwin.so
+          rm -rf priv && rm -rf _build && rm -f debug_nif
+          export CC="gcc -arch arm64"
+          mix compile
+          mv priv/debug.so artefacts/debug-arm64-apple-darwin.so
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: artefacts/*.so
