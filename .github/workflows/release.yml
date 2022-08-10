@@ -10,18 +10,43 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       MIX_ENV: prod
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pair:
+              arch_name: x86_64-linux-gnu
+              c_compiler: gcc
+              cpp_compiler: g++
+          - pair:
+              arch_name: aarch64-linux-gnu
+              c_compiler: gcc-aarch64-linux-gnu
+              cpp_compiler: g++-aarch64-linux-gnu
+          - pair:
+              arch_name: arm-linux-gnueabihf
+              c_compiler: gcc-arm-linux-gnueabihf
+              cpp_compiler: g++-arm-linux-gnueabihf
+          - pair:
+              arch_name: riscv64-linux-gnu
+              c_compiler: gcc-riscv64-linux-gnu
+              cpp_compiler: g++-riscv64-linux-gnu
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
         with:
           otp-version: 25.0.3
           elixir-version: 1.13.4
+      - name: Install system dependecies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ matrix.pair.c_compiler }} ${{ matrix.pair.cpp_compiler }}
       - name: Compile
         run: |
           mkdir -p artefacts
           mix deps.get
+          export CC=${{ matrix.pair.c_compiler }}
           mix do escript.build
-          mv priv/debug.so artefacts/debug-x86_64-linux-gnu-${GITHUB_REF##*/v}.so
+          mv priv/debug.so artefacts/debug-${{ matrix.pair.arch_name }}-${GITHUB_REF##*/v}.so
 
       - uses: softprops/action-gh-release@v1
         with:
