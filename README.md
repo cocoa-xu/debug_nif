@@ -12,10 +12,10 @@ $ cd debug_nif
 $ mix do escript.build + escript.install
 
 # or directly build from HEAD
-$ mix escript.install git https://github.com/cocoa-xu/debug_nif
+$ mix escript.install github cocoa-xu/debug_nif
 
 # or install a specific version
-$ mix escript.install git https://github.com/cocoa-xu/debug_nif tag v0.1.0
+$ mix escript.install github cocoa-xu/debug_nif tag v0.1.0
 ```
 
 ## Usage
