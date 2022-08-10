@@ -1,7 +1,7 @@
 defmodule DebugNIF.CLI do
   @moduledoc """
   synopsis:
-      A convienient script for debugging NIF libraries.
+      A convenient script for debugging NIF libraries.
   usage:
       $ debug_nif {options} arg1 arg2 ...
       is equvilent to call `mix arg1 arg2 ...`
@@ -97,8 +97,12 @@ defmodule DebugNIF.CLI do
                   Enum.map(env, fn {name, val} ->
                     System.put_env(name, val)
                   end)
-                  ret = :debug_nif.run_shell([debugger] ++ args)
-                  IO.puts("ret: #{inspect(ret)}")
+                  case :debug_nif.run_shell([debugger] ++ args) do
+                    {:error, msg} ->
+                        IO.puts("Error: #{msg}")
+                    {:ok, status} ->
+                        IO.puts("exited with code: #{status}")
+                  end
               end
           end
       end
