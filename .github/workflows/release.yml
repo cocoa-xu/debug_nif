@@ -20,7 +20,7 @@ jobs:
         run: |
           mkdir -p artefacts
           mix do escript.build
-          mv priv/debug.so artefacts/debug-x86_64-linux-gnu.so
+          mv priv/debug.so artefacts/debug-x86_64-linux-gnu-${GITHUB_REF##*/v}.so
 
       - uses: softprops/action-gh-release@v1
         with:
@@ -42,11 +42,11 @@ jobs:
           mkdir -p artefacts
           export CC="gcc -arch x86_64"
           mix compile
-          mv priv/debug.so artefacts/debug-x86_64-apple-darwin.so
+          mv priv/debug.so artefacts/debug-x86_64-apple-darwin-${GITHUB_REF##*/v}.so
           rm -rf priv && rm -rf _build && rm -f debug_nif
           export CC="gcc -arch arm64"
           mix compile
-          mv priv/debug.so artefacts/debug-arm64-apple-darwin.so
+          mv priv/debug.so artefacts/debug-arm64-apple-darwin-${GITHUB_REF##*/v}.so
 
       - uses: softprops/action-gh-release@v1
         with:
