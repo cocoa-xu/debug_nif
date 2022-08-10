@@ -2,7 +2,11 @@
 
 An escript for debugging a NIF library in a debugger. It automates the process described here, [Debug Erlang NIF library on macOS and Linux](https://cocoa-research.works/2022/02/debug-erlang-nif-library/).
 
-![screenshot](assets/screenshot.png)
+Works on macOS and Linux.
+
+![macOS](assets/screenshot-macos.png)
+
+![Linux](assets/screenshot-linux.png)
 
 ## Build and Installation
 
