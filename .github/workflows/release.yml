@@ -22,14 +22,17 @@ jobs:
               arch_name: aarch64-linux-gnu
               c_compiler: gcc-aarch64-linux-gnu
               cpp_compiler: g++-aarch64-linux-gnu
+              cc: aarch64-linux-gnu-gcc
           - pair:
               arch_name: arm-linux-gnueabihf
               c_compiler: gcc-arm-linux-gnueabihf
               cpp_compiler: g++-arm-linux-gnueabihf
+              cc: /usr/bin/arm-linux-gnueabihf-gcc-9
           - pair:
               arch_name: riscv64-linux-gnu
               c_compiler: gcc-riscv64-linux-gnu
               cpp_compiler: g++-riscv64-linux-gnu
+              cc: /usr/bin/riscv64-linux-gnu-gcc
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
@@ -44,7 +47,7 @@ jobs:
         run: |
           mkdir -p artefacts
           mix deps.get
-          export CC=${{ matrix.pair.c_compiler }}
+          export CC=${{ matrix.pair.cc }}
           mix do escript.build
           mv priv/debug.so artefacts/debug-${{ matrix.pair.arch_name }}-${GITHUB_REF##*/v}.so
 
