@@ -66,7 +66,6 @@ defmodule DebugNif.MixProject do
 
   defp deps do
     [
-      {:castore, "~> 0.1"},
       {:ex_doc, "~> 0.28", only: :docs, runtime: false}
     ]
   end

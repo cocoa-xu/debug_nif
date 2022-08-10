@@ -47,13 +47,13 @@ defmodule :debug_nif do
     end
 
     # https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/inets
-    cacertfile = CAStore.file_path() |> String.to_charlist()
+    # cacertfile = CAStore.file_path() |> String.to_charlist()
 
     http_options = [
       ssl: [
-        verify: :verify_peer,
-        cacertfile: cacertfile,
-        depth: 2,
+        # verify: :verify_peer,
+        # cacertfile: cacertfile,
+        # depth: 2,
         customize_hostname_check: [
           match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
         ]
@@ -71,6 +71,8 @@ defmodule :debug_nif do
     end
   end
 
+  @base_url Mix.Project.config()[:download_base_url]
+  @version Mix.Project.config()[:version]
   defp get_nif_file do
     cache_opts = if System.get_env("MIX_XDG"), do: %{os: :linux}, else: %{}
     cache_dir = :filename.basedir(:user_cache, "", cache_opts)
@@ -89,11 +91,10 @@ defmodule :debug_nif do
       |> Enum.reject(fn {_path, exists?} -> exists? == false end)
 
     if Enum.count(existing_nif_file) == 0 do
-      base_url = Mix.Project.config()[:download_base_url]
-      version = Mix.Project.config()[:version]
+
       with {:ok, target} <- current_system_architecture(),
-           {:ok, nif_file} <- download_nif_artifact("#{base_url}/debug-#{target}-#{version}.so") do
-        File.mkdir!(debug_nif_priv)
+           {:ok, nif_file} <- download_nif_artifact("#{@base_url}/debug-#{target}-#{@version}.so") do
+        File.mkdir_p(debug_nif_priv)
         File.write!("#{cached_nif_file}.so", nif_file)
         String.to_charlist(cached_nif_file)
       else
