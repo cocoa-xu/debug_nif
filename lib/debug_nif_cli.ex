@@ -83,7 +83,7 @@ defmodule DebugNIF.CLI do
                     "lldb" ->
                         args
                     "gdb" ->
-                        ["--ex", erlexec, "--args"] ++ commands ++ args
+                        ["--ex", "run", "--args", erlexec] ++ commands ++ args
                     _ ->
                         args
                 end
