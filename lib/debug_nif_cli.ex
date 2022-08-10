@@ -79,6 +79,13 @@ defmodule DebugNIF.CLI do
               erlexec = Path.join([bind_dir, "erlexec"])
               start_boot = Path.join([root_dir, "bin", "start.boot"])
               args = debugger_args ++ [erlexec] ++ commands ++ args
+              args =
+                case debugger do
+                    "lldb" ->
+                        args
+                    "gdb" ->
+                        ["--ex", erlexec, "--args"] ++ commands ++ args
+                end
               env = [
                   {"BINDIR", bind_dir},
                   {"ROOTDIR", root_dir},
