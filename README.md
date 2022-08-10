@@ -6,7 +6,16 @@ An escript for debugging a NIF library in a debugger. It automates the process d
 
 ## Build and Installation
 ```shell
+# clone this repo
+$ git clone https://github.com/cocoa-xu/debug_nif.git
+$ cd debug_nif
 $ mix do escript.build + escript.install
+
+# or directly build from HEAD
+$ mix escript.install git https://github.com/cocoa-xu/debug_nif
+
+# or install a specific version
+$ mix escript.install git https://github.com/cocoa-xu/debug_nif tag v0.1.0
 ```
 
 ## Usage
