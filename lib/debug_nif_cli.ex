@@ -68,7 +68,6 @@ defmodule DebugNIF.CLI do
                       [debugger | debugger_args] = String.split(debugger, " ", trim: true)
                       {debugger, debugger_args}
               end
-          debugger = System.find_executable(debugger) || raise "cannot find debugger: #{debugger}"
           print_cmd_only = opts[:print_cmd_only] || false
           print_only = opts[:print_only] || false
 
@@ -88,6 +87,7 @@ defmodule DebugNIF.CLI do
                     _ ->
                         args
                 end
+              debugger = System.find_executable(debugger) || raise "cannot find debugger: #{debugger}"
               env = [
                   {"BINDIR", bind_dir},
                   {"ROOTDIR", root_dir},
