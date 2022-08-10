@@ -50,9 +50,9 @@ defmodule DebugNIF.CLI do
       {:unix, :darwin} ->
           {"lldb", ["--"]}
       {:unix, _} ->
-          {"gdb", []}
+          {"gdb", ["--args"]}
       _ ->
-          {"gdb", []}
+          {"gdb", ["--args"]}
     end
   end
 
@@ -77,15 +77,7 @@ defmodule DebugNIF.CLI do
               bind_dir = Path.join([root_dir, "erts-#{:erlang.system_info(:version)}", "bin"])
               erlexec = Path.join([bind_dir, "erlexec"])
               start_boot = Path.join([root_dir, "bin", "start.boot"])
-              args =
-                case debugger do
-                    "lldb" ->
-                        debugger_args ++ [erlexec] ++ commands ++ args
-                    "gdb" ->
-                        ["--ex", "run", "--args", erlexec] ++ commands ++ args
-                    _ ->
-                        debugger_args ++ [erlexec] ++ commands ++ args
-                end
+              args = debugger_args ++ [erlexec] ++ commands ++ args
               debugger = System.find_executable(debugger) || raise "cannot find debugger: #{debugger}"
               env = [
                   {"BINDIR", bind_dir},
