@@ -9,6 +9,9 @@ defmodule Mix.Tasks.Compile.DebugNif do
         erts_include_dir = System.get_env("ERTS_INCLUDE_DIR", Path.join(erts_dir, "include"))
         System.put_env("ERTS_INCLUDE_DIR", erts_include_dir)
         System.put_env("MIX_APP_PATH", Mix.Project.app_path())
+        cache_opts = if System.get_env("MIX_XDG"), do: %{os: :linux}, else: %{}
+        cache_dir = :filename.basedir(:user_cache, "", cache_opts)
+        System.put_env("ERLANG_CACHE_DIR", cache_dir)
 
         opts = [
           into: IO.stream(:stdio, :line),
