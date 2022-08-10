@@ -41,14 +41,16 @@ defmodule DebugNif.MixProject do
   @app :debug_nif
   @version "0.1.0"
   @github_url "https://github.com/cocoa-xu/debug_nif"
+  @prefer_precompiled "YES"
   def project do
+    use_precompiled = System.get_env("DEBUG_NIF_USE_PRECOMPILED", @prefer_precompiled) == "YES"
     [
       app: @app,
       version: @version,
       download_base_url: "#{@github_url}/releases/download/v#{@version}",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      compilers: [@app] ++ Mix.compilers(),
+      compilers: (if !use_precompiled do [@app] else [] end) ++ Mix.compilers(),
       deps: deps(),
       escript: [
         main_module: DebugNIF.CLI,

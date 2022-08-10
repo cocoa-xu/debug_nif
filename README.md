@@ -5,6 +5,7 @@ An escript for debugging a NIF library in a debugger. It automates the process d
 ![screenshot](assets/screenshot.png)
 
 ## Build and Installation
+
 ```shell
 # clone this repo
 $ git clone https://github.com/cocoa-xu/debug_nif.git
@@ -16,6 +17,13 @@ $ mix escript.install github cocoa-xu/debug_nif
 
 # or install a specific version
 $ mix escript.install github cocoa-xu/debug_nif tag v0.1.0
+```
+
+By default the `debug_nif` escript will try to download precompiled NIF binaries from GitHub. If there is no corresponding precompiled binary for your machine, you can build it from source by
+
+```shell
+export DEBUG_NIF_USE_PRECOMPILED=NO
+# then call `mix escript.install ...`
 ```
 
 ## Usage
