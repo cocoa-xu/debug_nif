@@ -1,10 +1,8 @@
 defmodule DebugNIF.CLI do
   @moduledoc """
-  synopsis:
-      A convenient script for debugging NIF libraries.
   usage:
       $ debug_nif {options} arg1 arg2 ...
-      is equvilent to call `mix arg1 arg2 ...`
+      # equvilent to call `mix arg1 arg2 ...`
   options:
       --print-only          Only print commands and necessary environment variables
                             for running the debugger.
@@ -16,6 +14,7 @@ defmodule DebugNIF.CLI do
 
   """
 
+  @doc false
   def main([help_opt]) when help_opt == "-h" or help_opt == "--help" do
       IO.puts(@moduledoc)
   end
@@ -45,6 +44,7 @@ defmodule DebugNIF.CLI do
       {opts, cmd_and_args, errors}
   end
 
+  @doc false
   def default_debugger do
     case :os.type() do
       {:unix, :darwin} ->
@@ -108,6 +108,7 @@ defmodule DebugNIF.CLI do
       end
   end
 
+  @doc false
   def run_cmd(binary, args, opts \\ []) do
       default_opts = [
           into: "",

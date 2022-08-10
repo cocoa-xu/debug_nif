@@ -40,22 +40,51 @@ defmodule DebugNif.MixProject do
 
   @app :debug_nif
   @version "0.1.0"
+  @github_url "https://github.com/cocoa-xu/debug_nif"
   def project do
     [
       app: @app,
       version: @version,
+      download_base_url: "#{@github_url}/releases/download/v#{@version}",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       compilers: [@app] ++ Mix.compilers(),
-      deps: [],
+      deps: deps(),
       escript: [
         main_module: DebugNIF.CLI,
         comment: "escript for debugging a NIF library."
-      ]
+      ],
+      description: "escript for debugging a NIF library.",
+      docs: docs(),
+      package: package(),
     ]
   end
 
   def application do
-    []
+    [extra_applications: [:logger, :crypto, :inets, :public_key]]
+  end
+
+  defp deps do
+    [
+      {:castore, "~> 0.1"},
+      {:ex_doc, "~> 0.28", only: :docs, runtime: false}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "DebugNIF.CLI",
+      source_ref: "v#{@version}",
+      source_url: @github_url
+    ]
+  end
+
+  defp package() do
+    [
+      name: to_string(@app),
+      files: ~w(c_src lib mix.exs README* LICENSE* Makefile),
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => @github_url}
+    ]
   end
 end
