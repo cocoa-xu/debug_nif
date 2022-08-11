@@ -74,13 +74,13 @@ defmodule DebugNIF.CLI do
           with {"erl " <> commands, 0} <- run_cmd("mix", [], env: [{"ELIXIR_CLI_DRY_RUN", "1"}]) do
               commands = String.split(String.replace(commands, "\n", ""), " ", trim: true)
               root_dir = "#{:code.root_dir()}"
-              bind_dir = Path.join([root_dir, "erts-#{:erlang.system_info(:version)}", "bin"])
-              erlexec = Path.join([bind_dir, "erlexec"])
+              bin_dir = Path.join([root_dir, "erts-#{:erlang.system_info(:version)}", "bin"])
+              erlexec = Path.join([bin_dir, "erlexec"])
               start_boot = Path.join([root_dir, "bin", "start.boot"])
               args = debugger_args ++ [erlexec] ++ commands ++ args
               debugger = System.find_executable(debugger) || raise "cannot find debugger: #{debugger}"
               env = [
-                  {"BINDIR", bind_dir},
+                  {"BINDIR", bin_dir},
                   {"ROOTDIR", root_dir},
                   {"START_BOOT", start_boot},
                   {"EMU", "beam"}
