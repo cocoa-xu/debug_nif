@@ -34,7 +34,7 @@ export DEBUG_NIF_USE_PRECOMPILED=NO
 ```
 
 ## Usage
-First thing first, don't forget to compile the NIF library with debug info, the compilation flags  should contains something like `-g3 -fno-omit-frame-pointer`.
+First thing first, don't forget to compile the NIF library with debug info, the compilation flags  should contain something like `-g3 -fno-omit-frame-pointer`.
 
 ```shell
 # this is equvilent to call `mix test` 
@@ -53,7 +53,7 @@ $ debug_nif --generate=xcode \
   test
 ```
 
-An "mix" sceheme will be available in the generated Xcode project. It contains all necessary environment variables and launch arguments for debugging or profiling.
+An "mix" sceheme will be available in the generated Xcode project. It contains all necessary environment variables and launch arguments for debugging and profiling.
 
 ![macos-xcode](assets/screenshot-macos-xcode.png)
 
@@ -73,4 +73,6 @@ options:
                                Currenly, the only valid value is `xcode`.
     --generate-out=DIR         Save generated file to the given directory.
     --generate-overwrite=[yN]  Overwrite existing generated files. Default is no.
+    --mix-project-root=ROOT    Specify mix project root. Default is the cwd path when
+                               execute this escript.
 ```
