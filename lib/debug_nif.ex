@@ -6,9 +6,11 @@ defmodule :debug_nif do
     # get current target triplet from `:erlang.system_info/1`
     system_architecture = to_string(:erlang.system_info(:system_architecture))
     current = String.split(system_architecture, "-", trim: true)
+
     case length(current) do
       4 ->
         {:ok, "#{Enum.at(current, 0)}-#{Enum.at(current, 2)}-#{Enum.at(current, 3)}"}
+
       3 ->
         case :os.type() do
           {:unix, :darwin} ->
@@ -19,9 +21,11 @@ defmodule :debug_nif do
             else
               {:ok, system_architecture}
             end
+
           _ ->
             {:ok, system_architecture}
         end
+
       _ ->
         {:error, "cannot decide current target"}
     end
@@ -91,14 +95,13 @@ defmodule :debug_nif do
       |> Enum.reject(fn {_path, exists?} -> exists? == false end)
 
     if Enum.count(existing_nif_file) == 0 do
-
       with {:ok, target} <- current_system_architecture(),
            {:ok, nif_file} <- download_nif_artifact("#{@base_url}/debug-#{target}-#{@version}.so") do
         File.mkdir_p(debug_nif_priv)
         File.write!("#{cached_nif_file}.so", nif_file)
         String.to_charlist(cached_nif_file)
       else
-         {:error, error} -> raise error
+        {:error, error} -> raise error
       end
     else
       existing_nif_file
@@ -110,6 +113,7 @@ defmodule :debug_nif do
   @on_load :load_nif
   def load_nif do
     nif_file = get_nif_file()
+
     case :erlang.load_nif(nif_file, 0) do
       :ok -> :ok
       {:error, {:reload, _}} -> :ok

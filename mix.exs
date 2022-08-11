@@ -16,7 +16,7 @@ defmodule Mix.Tasks.Compile.DebugNif do
         opts = [
           into: IO.stream(:stdio, :line),
           stderr_to_stdout: true,
-          cd: Path.expand(File.cwd!()),
+          cd: Path.expand(File.cwd!())
         ]
 
         Mix.Project.ensure_structure()
@@ -24,7 +24,9 @@ defmodule Mix.Tasks.Compile.DebugNif do
         Mix.Project.ensure_structure()
 
         case status do
-          0 -> :ok
+          0 ->
+            :ok
+
           _ ->
             Mix.raise(~s{Could not compile" (exit status: #{status}).\n})
         end
@@ -44,13 +46,19 @@ defmodule DebugNif.MixProject do
   @prefer_precompiled "YES"
   def project do
     use_precompiled = System.get_env("DEBUG_NIF_USE_PRECOMPILED", @prefer_precompiled) == "YES"
+
     [
       app: @app,
       version: @version,
       download_base_url: "#{@github_url}/releases/download/v#{@version}",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      compilers: (if !use_precompiled do [@app] else [] end) ++ Mix.compilers(),
+      compilers:
+        if !use_precompiled do
+          [@app]
+        else
+          []
+        end ++ Mix.compilers(),
       deps: deps(),
       escript: [
         main_module: DebugNIF.CLI,
@@ -58,7 +66,7 @@ defmodule DebugNif.MixProject do
       ],
       description: "escript for debugging a NIF library.",
       docs: docs(),
-      package: package(),
+      package: package()
     ]
   end
 
