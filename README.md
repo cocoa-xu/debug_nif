@@ -22,7 +22,8 @@ $ mix do escript.build + escript.install
 $ mix escript.install github cocoa-xu/debug_nif
 
 # or install a specific version
-$ mix escript.install github cocoa-xu/debug_nif tag v0.1.0
+# please see the release page for all available versions
+$ mix escript.install github cocoa-xu/debug_nif tag v0.1.1
 ```
 
 By default the `debug_nif` escript will try to download precompiled NIF binaries from GitHub. If there is no corresponding precompiled binary for your machine, you can build it from source by
@@ -33,6 +34,8 @@ export DEBUG_NIF_USE_PRECOMPILED=NO
 ```
 
 ## Usage
+First thing first, don't forget to compile the NIF library with debug info, the compilation flags  should contains something like `-g3 -fno-omit-frame-pointer`.
+
 ```shell
 # this is equvilent to call `mix test` 
 # but run everything in the debugger
