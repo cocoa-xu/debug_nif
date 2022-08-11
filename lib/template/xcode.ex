@@ -109,20 +109,25 @@ defmodule DebugNIF.Template.Xcode do
           </EnvironmentVariables>
         </LaunchAction>
         <ProfileAction
-          buildConfiguration = "Release"
-          shouldUseLaunchSchemeArgsEnv = "YES"
-          savedToolIdentifier = ""
-          useCustomWorkingDirectory = "NO"
-          debugDocumentVersioning = "YES">
-          <MacroExpansion>
+            buildConfiguration = "Release"
+            shouldUseLaunchSchemeArgsEnv = "YES"
+            savedToolIdentifier = ""
+            useCustomWorkingDirectory = "YES"
+            customWorkingDirectory = "#{cwd}"
+            debugDocumentVersioning = "YES">
+            <PathRunnable
+              runnableDebuggingMode = "0"
+              FilePath = "#{erlexec}">
+            </PathRunnable>
+            <MacroExpansion>
               <BuildableReference
-                BuildableIdentifier = "primary"
-                BlueprintIdentifier = "CCDCF61628A4AB3200211AF9"
-                BuildableName = "mix"
-                BlueprintName = "mix"
-                ReferencedContainer = "container:debug_nif.xcodeproj">
+                  BuildableIdentifier = "primary"
+                  BlueprintIdentifier = "CCDCF61628A4AB3200211AF9"
+                  BuildableName = "mix"
+                  BlueprintName = "mix"
+                  ReferencedContainer = "container:debug_nif.xcodeproj">
               </BuildableReference>
-          </MacroExpansion>
+            </MacroExpansion>
         </ProfileAction>
         <AnalyzeAction
           buildConfiguration = "Debug">
